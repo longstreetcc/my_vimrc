@@ -1,4 +1,5 @@
 "to get rid of some nasty limitaion for VI compatitable
+source $ADMIN_SCRIPTS/master.vimrc
 set nocompatible              " be iMproved, required
 let mapleader=','
 
@@ -8,16 +9,16 @@ let mapleader=','
 filetype off                  " required
 
 " set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
+set rtp+=/home/junyilu/.vim/bundle/Vundle.vim
 call vundle#begin()
 
+Plugin 'gmarik/Vundle.vim'
 Plugin 'godlygeek/tabular'
 Plugin 'plasticboy/vim-markdown'
 Plugin 'altercation/vim-colors-solarized'
 Plugin 'SirVer/ultisnips'
 "Plugin 'honza/vim-snippets'
 Plugin 'cenalulu/vim-snippets'
-Plugin 'vim-scripts/vim-auto-save'
 Plugin 'tpope/vim-surround'
 Plugin 'scrooloose/nerdcommenter'
 Plugin 'vim-scripts/YankRing.vim'
@@ -37,22 +38,10 @@ colorscheme solarized
 " for power line
 set rtp+=/usr/local/lib/python2.7/site-packages/powerline/bindings/vim
 
-" for vim auto-save
-let g:auto_save_no_updatetime = 1  " do not change the global 'updatetime' option
-let g:auto_save = 1  " enable AutoSave on Vim startup
-let g:auto_save_in_insert_mode = 0  " do not save while in insert mode
-let g:auto_save_silent = 1  " do not display the auto-save notification
-let g:auto_save_events = ["InsertLeave", "TextChanged"]
-
-
-
  
 set t_Co=256
  
 let g:minBufExplForceSyntaxEnable = 1
-python from powerline.vim import setup as powerline_setup
-python powerline_setup()
-python del powerline_setup
  
 if ! has('gui_running')
    set ttimeoutlen=10
@@ -69,7 +58,8 @@ set noshowmode " Hide the default mode text (e.g. -- INSERT -- below the statusl
 " end of powerline
 
 " this is for snippets & unisnips
-" Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
+" Trigger configuration. Do not use <tab> 
+" if you use https://github.com/Valloric/YouCompleteMe.
 let g:UltiSnipsExpandTrigger="<tab>"
 " let g:UltiSnipsListSnippets="<c-tab>"
 let g:UltiSnipsJumpForwardTrigger="<c-f>"
@@ -113,7 +103,7 @@ nnoremap <leader>/ :nohlsearch<CR>
 set wrap
 set textwidth=79
 set formatoptions=qrn1
-set colorcolumn=85
+set colorcolumn=80
 
 
 """"""""""""""""""""""""""""""""""""""
@@ -144,7 +134,10 @@ endfunction
 """"""""""""""""""""""""""""""""""""""
 nnoremap <leader>i gv>
 nnoremap <leader>q :q!<cr>
+nnoremap <leader>w :w<cr>
 nnoremap <leader><tab> %
 nnoremap <leader>z ZZ
 nnoremap <leader>p :YRShow<cr>
-nnoremap <leader>w :w !sudo tee % >/dev/null <cr>
+nnoremap <leader>W :w !sudo tee % >/dev/null <cr>
+
+
