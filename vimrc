@@ -1,9 +1,24 @@
+"""""""""""""""""""""""""""""""""""""""""""""""""""
 "to get rid of some nasty limitaion for VI compatitable
-source $ADMIN_SCRIPTS/master.vimrc
+"global basice conf
+""""""""""""""""""""""""""""""""""""""""
 set nocompatible              " be iMproved, required
 let mapleader=','
+set t_Co=256
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""
+" FB specified conf
+""""""""""""""""""""""""""""""""""""""""
+source $ADMIN_SCRIPTS/master.vimrc
+source /home/engshare/admin/scripts/vim/biggrep.vim
+"source /mnt/vol/engshare/admin/scripts/vim/fbvim.vim
+source /home/junyilu/.vim/fbvim.vim
+let g:hack#enable=0
+au BufNewFile,BufRead TARGETS setlocal ft=conf
 
 
+"let backspace work on mac
+set backspace=indent,eol,start
 
 " this is vundle part
 filetype off                  " required
@@ -21,12 +36,19 @@ Plugin 'SirVer/ultisnips'
 Plugin 'cenalulu/vim-snippets'
 Plugin 'tpope/vim-surround'
 Plugin 'scrooloose/nerdcommenter'
+Plugin 'klen/python-mode'
 Plugin 'vim-scripts/YankRing.vim'
-Bundle 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim'}
+"Plugin 'davidhalter/jedi-vim'
+Plugin 'Valloric/YouCompleteMe'
+Plugin 'christoomey/vim-tmux-navigator'
+Plugin 'Lokaltog/vim-easymotion'
+Bundle 'cenalulu/powerline', {'rtp': 'powerline/bindings/vim'}
 
 
 call vundle#end()
 filetype plugin indent on
+
+set rtp+=~/.fzf
 
 " vundle part end
 
@@ -39,7 +61,6 @@ colorscheme solarized
 set rtp+=/usr/local/lib/python2.7/site-packages/powerline/bindings/vim
 
  
-set t_Co=256
  
 let g:minBufExplForceSyntaxEnable = 1
  
@@ -60,7 +81,7 @@ set noshowmode " Hide the default mode text (e.g. -- INSERT -- below the statusl
 " this is for snippets & unisnips
 " Trigger configuration. Do not use <tab> 
 " if you use https://github.com/Valloric/YouCompleteMe.
-let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsExpandTrigger="<c-e>"
 " let g:UltiSnipsListSnippets="<c-tab>"
 let g:UltiSnipsJumpForwardTrigger="<c-f>"
 let g:UltiSnipsJumpBackwardTrigger="<c-b>"
@@ -83,6 +104,16 @@ set foldmethod=syntax
 set foldlevel=99
 set relativenumber
 set noswapfile
+
+
+""""""""""""""""""""""""
+" move between pane
+""""""""""""""""""""""""
+nnoremap <C-j> <C-W><C-j>
+nnoremap <C-k> <C-W><C-k>
+nnoremap <C-l> <C-W><C-l>
+nnoremap <C-h> <C-W><C-h>
+
 
 """"""""""""""""""""""""
 " global conf for search
@@ -128,16 +159,107 @@ function HexMe()
 endfunction
 
 
+""""""""""""""""""""""""""""""""""""""
+"jedi auto complele
+""""""""""""""""""""""""""""""""""""""
+let g:jedi#goto_command = "<leader>d"
+let g:jedi#goto_assignments_command = "<leader>s"
+let g:jedi#goto_definitions_command = ""
+let g:jedi#documentation_command = "<leader>K"
+let g:jedi#usages_command = "<leader>n"
+let g:jedi#completions_command = "<C-Space>"
+let g:jedi#rename_command = "<leader>r"
+let g:jedi#show_call_signatures = "2"
+let g:jedi#popup_on_dot = 0
+
+""""""""""""""""""""""""""""""""""""""
+"You complete me
+""""""""""""""""""""""""""""""""""""""
+let g:ycm_autoclose_preview_window_after_completion = 1
+let g:ycm_min_num_identifier_candidate_chars = 4
+"let g:ycm_global_ycm_extra_conf = '/home/maxim/local/bin/.ycm_extra_conf.py'
+"nnoremap <leader>y :YcmForceCompileAndDiagnostics<cr>
+"nnoremap <leader>g :YcmCompleter GoToDefinitionElseDeclaration<CR>
+"nnoremap <leader>d :YcmCompleter GoToDefinition<CR>
+"nnoremap <leader>d :YcmCompleter GoToDeclaration<CR>
+let g:ycm_complete_in_strings = 0
+let g:ycm_server_log_level = 'warning'
+
+
+""""""""""""""""""""""""""""""""""""""
+"python mode
+""""""""""""""""""""""""""""""""""""""
+let g:pymode_run = 0
+let g:pymode_rope_goto_definition_bind = '<C-g>'
+let g:pymode_lint_ignore = "C901"
+let g:pymode_rope = 0
+let g:pymode_lint_checkers = ['pep8']
+let g:pymode_lint_todo_symbol = 'W>'
+let g:pymode_lint_comment_symbol = 'C>'
+let g:pymode_lint_visual_symbol = 'R>'
+let g:pymode_lint_error_symbol = 'E>'
+let g:pymode_lint_info_symbol = 'I>'
+let g:pymode_lint_pyflakes_symbol = 'F>'
+let g:pymode_syntax_print_as_function = 1
+
 
 """"""""""""""""""""""""""""""""""""""
 "all leader related config
 """"""""""""""""""""""""""""""""""""""
 nnoremap <leader>i gv>
-nnoremap <leader>q :q!<cr>
+nnoremap <leader>p :YRShow<cr>
+nnoremap <leader>q :q<cr>
+nnoremap <leader>Q :q!<cr>
+nnoremap <leader>s :<C-w>s
+nnoremap <leader>v :<C-w>v
 nnoremap <leader>w :w<cr>
+nnoremap <leader>W :w !sudo tee % >/dev/null <cr>
 nnoremap <leader><tab> %
 nnoremap <leader>z ZZ
-nnoremap <leader>p :YRShow<cr>
-nnoremap <leader>W :w !sudo tee % >/dev/null <cr>
 
 
+inoremap <S-Tab> <C-D>
+vnoremap <Tab> >gv
+vnoremap <S-Tab> <gv
+
+" folding
+nnoremap <leader>f za
+nnoremap <leader>M zM
+nnoremap <leader>R zR
+
+""""""""""""""""""""""""
+" fast_motion
+""""""""""""""""""""""""
+map ; <Plug>(easymotion-prefix)
+let g:EasyMotion_startofline = 0 
+map f <Plug>(easymotion-f)
+map F <Plug>(easymotion-F)
+map t <Plug>(easymotion-t)
+map T <Plug>(easymotion-T)
+map w <Plug>(easymotion-w)
+map W <Plug>(easymotion-W)
+map b <Plug>(easymotion-b)
+map B <Plug>(easymotion-B)
+map e <Plug>(easymotion-e)
+map E <Plug>(easymotion-E)
+map s <Plug>(easymotion-s2)
+let g:EasyMotion_use_upper = 1
+let g:EasyMotion_keys = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ;'
+
+""""""""""""""""""""""""
+" move between tab
+""""""""""""""""""""""""
+noremap <leader>1 1gt
+noremap <leader>2 2gt
+noremap <leader>3 3gt
+noremap <leader>4 4gt
+noremap <leader>5 5gt
+noremap <leader>6 6gt
+noremap <leader>7 7gt
+noremap <leader>8 8gt
+noremap <leader>9 9gt
+
+"nnoremap <leader>f :FBVimFilenameSearch<cr>
+nnoremap <leader>f :FZF ~/fbcode<cr>
+nnoremap <leader>g :FBVimBigGrep<cr>
+nnoremap <leader>b :FBVimPopTagStack<cr>
